@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class Movement : MonoBehaviour
+public class Movement : NetworkBehaviour
 {
     public float maxSpeed = 10f;
     bool facingright = true;
@@ -23,19 +24,23 @@ void Start()
 // Update is called once per frame
 void FixedUpdate()
 {
-    grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
+    if(this.isLocalPlayer){
+        grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
 
 
-    float move = Input.GetAxis("Horizontal");
+        float move = Input.GetAxis("Horizontal");
 
-    rb2d.velocity = new Vector2(move * maxSpeed, rb2d.velocity.y);
+        rb2d.velocity = new Vector2(move * maxSpeed, rb2d.velocity.y);
+    }
 }
 
 private void Update()
 {
-    if (grounded && Input.GetKeyDown(KeyCode.Space)) 
-    {
-        rb2d.AddForce(new Vector2(0, jumpForce));
+    if(this.isLocalPlayer){
+        if (grounded && Input.GetKeyDown(KeyCode.Space)) 
+        {
+            rb2d.AddForce(new Vector2(0, jumpForce));
+        }
     }
 }
 }
