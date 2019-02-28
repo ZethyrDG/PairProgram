@@ -17,14 +17,9 @@ public class GrabCoin : NetworkBehaviour
     {
         
     }
-    void DestroyGameObject()
-    {
-        Destroy(gameObject);
-    }
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("entered");
-        this.gameObject.SetActive(false);
         if(this.isClient)
         {
             CmdChangeScene();

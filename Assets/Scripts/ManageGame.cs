@@ -36,6 +36,8 @@ public class ManageGame : MonoBehaviour
             thing.transform.position = GameObject.Find($"SpawnPos{count}").transform.position;
             count++;
         }
+        var CoinObject = GameObject.Find("Coin");
+        CoinObject.transform.position = GameObject.Find("CoinLocation").transform.position;
     }
 
     void OnDisable()
