@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
 using UnityEngine;
 
-public class GrabCoin : MonoBehaviour
+public class GrabCoin : NetworkBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -24,6 +25,23 @@ public class GrabCoin : MonoBehaviour
     {
         Debug.Log("entered");
         this.gameObject.SetActive(false);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex +1);
+        if(this.isClient)
+        {
+            CmdChangeScene();
+        }
+        if(this.isServer)
+        {
+            RpcChangeScene();
+        }
+    }
+    [ClientRpc]
+    public void RpcChangeScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
+    }
+    [Command]
+    public void CmdChangeScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
     }
 }
