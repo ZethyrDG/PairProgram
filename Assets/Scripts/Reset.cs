@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 using UnityEngine;
 
-public class GrabCoin : NetworkBehaviour
+public class Reset : NetworkBehaviour
 {
     // Start is called before the first frame update
+    public Button m_ResetButton;
     void Start()
     {
-        
+        m_ResetButton.onClick.AddListener(OnClick);
     }
 
     // Update is called once per frame
@@ -17,9 +19,18 @@ public class GrabCoin : NetworkBehaviour
     {
         
     }
-    private void OnTriggerEnter2D(Collider2D other)
+    [ClientRpc]
+    public void RpcChangeScene()
     {
-        Debug.Log("entered");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    [Command]
+    public void CmdChangeScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    void OnClick()
+    {
         if(this.isClient)
         {
             CmdChangeScene();
@@ -28,15 +39,5 @@ public class GrabCoin : NetworkBehaviour
         {
             RpcChangeScene();
         }
-    }
-    [ClientRpc]
-    public void RpcChangeScene()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
-    }
-    [Command]
-    public void CmdChangeScene()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
     }
 }
