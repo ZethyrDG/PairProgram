@@ -31,7 +31,6 @@ public class Movement : NetworkBehaviour
         {
             grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
             anim.SetBool("Ground", grounded);
-            Debug.Log(grounded);
             anim.SetFloat("vSpeed", rb2d.velocity.y);
 
             float move = Input.GetAxis("Horizontal");
@@ -40,6 +39,19 @@ public class Movement : NetworkBehaviour
 
             rb2d.velocity = new Vector2(move * maxSpeed, rb2d.velocity.y);
 
+            if (move > 0 && !facingright)
+                flip();
+            else if (move < 0 && facingright)
+                flip();
+        }
+        else
+        {
+            grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
+            anim.SetBool("Ground", grounded);
+            anim.SetFloat("vSpeed", rb2d.velocity.y);
+            float move = rb2d.velocity.x;
+            anim.SetFloat("Speed", Mathf.Abs(move));
+            rb2d.velocity = new Vector2(move * maxSpeed, rb2d.velocity.y);
             if (move > 0 && !facingright)
                 flip();
             else if (move < 0 && facingright)
